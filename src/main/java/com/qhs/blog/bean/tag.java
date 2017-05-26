@@ -6,6 +6,15 @@ package com.qhs.blog.bean;
 public class tag {
     private int id;
     private String name;
+    private int parent;
+
+    public int getParent() {
+        return parent;
+    }
+
+    public void setParent(int parent) {
+        this.parent = parent;
+    }
 
     public int getId() {
         return id;
