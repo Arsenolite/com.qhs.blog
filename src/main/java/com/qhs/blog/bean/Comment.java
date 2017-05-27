@@ -3,11 +3,29 @@ package com.qhs.blog.bean;
 /**
  * Created by QHS on 2017/5/25.
  */
-public class comment {
+public class Comment {
     private int id;
     private int author;
     private String content;
-    private int article;
+    private int article_id;
+    private String create_at;
+
+    public int getArticle_id() {
+        return article_id;
+    }
+
+    public void setArticle_id(int article_id) {
+        this.article_id = article_id;
+    }
+
+
+    public String getCreate_at() {
+        return create_at;
+    }
+
+    public void setCreate_at(String create_at) {
+        this.create_at = create_at;
+    }
 
     public int getId() {
         return id;
@@ -33,11 +51,5 @@ public class comment {
         this.content = content;
     }
 
-    public int getArticle() {
-        return article;
-    }
 
-    public void setArticle(int article) {
-        this.article = article;
-    }
 }

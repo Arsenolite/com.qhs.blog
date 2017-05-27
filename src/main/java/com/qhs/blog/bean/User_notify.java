@@ -3,7 +3,7 @@ package com.qhs.blog.bean;
 /**
  * Created by QHS on 2017/5/25.
  */
-public class user_notify {
+public class User_notify {
     private int id;
     private int isread;
     private int user;

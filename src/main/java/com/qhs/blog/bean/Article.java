@@ -3,7 +3,7 @@ package com.qhs.blog.bean;
 /**
  * Created by QHS on 2017/5/25.
  */
-public class article {
+public class Article {
     private int id;
     private int source;
     private String title;

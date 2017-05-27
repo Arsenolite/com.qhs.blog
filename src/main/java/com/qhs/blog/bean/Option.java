@@ -3,7 +3,7 @@ package com.qhs.blog.bean;
 /**
  * Created by QHS on 2017/5/25.
  */
-public class option {
+public class Option {
     private int id;
     private int user;
     private String action;

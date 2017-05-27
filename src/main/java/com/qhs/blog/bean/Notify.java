@@ -3,7 +3,7 @@ package com.qhs.blog.bean;
 /**
  * Created by QHS on 2017/5/25.
  */
-public class notify {
+public class Notify {
     private int id;
     private String content;
     private int type;
@@ -12,7 +12,15 @@ public class notify {
     private int sender;
     private String create_at;
     private int action_type;
+    private int target_type;
 
+    public int getTarget_type() {
+        return target_type;
+    }
+
+    public void setTarget_type(int target_type) {
+        this.target_type = target_type;
+    }
     public int getId() {
         return id;
     }

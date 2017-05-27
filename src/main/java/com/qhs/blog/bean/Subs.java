@@ -3,7 +3,7 @@ package com.qhs.blog.bean;
 /**
  * Created by QHS on 2017/5/25.
  */
-public class subs {
+public class Subs {
     private int id;
     private int target;
     private String action_type;
