@@ -1,5 +1,7 @@
 package com.qhs.blog.bean;
 
+import java.sql.Timestamp;
+
 /**
  * Created by QHS on 2017/5/25.
  */
@@ -10,7 +12,7 @@ public class Notify {
     private int target;
     private String action;
     private int sender;
-    private String create_at;
+    private Timestamp create_at;
     private int action_type;
     private int target_type;
 
@@ -69,11 +71,11 @@ public class Notify {
         this.sender = sender;
     }
 
-    public String getCreate_at() {
+    public Timestamp getCreate_at() {
         return create_at;
     }
 
-    public void setCreate_at(String create_at) {
+    public void setCreate_at(Timestamp create_at) {
         this.create_at = create_at;
     }
 

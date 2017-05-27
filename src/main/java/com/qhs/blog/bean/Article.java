@@ -1,5 +1,7 @@
 package com.qhs.blog.bean;
 
+import java.sql.Timestamp;
+
 /**
  * Created by QHS on 2017/5/25.
  */
@@ -8,8 +10,8 @@ public class Article {
     private int source;
     private String title;
     private String content;
-    private String create_at;
-    private String update_at;
+    private Timestamp create_at;
+    private Timestamp update_at;
     private int author;
     private int count;
     private int level;
@@ -46,19 +48,19 @@ public class Article {
         this.content = content;
     }
 
-    public String getCreate_at() {
+    public Timestamp getCreate_at() {
         return create_at;
     }
 
-    public void setCreate_at(String create_at) {
+    public void setCreate_at(Timestamp create_at) {
         this.create_at = create_at;
     }
 
-    public String getUpdate_at() {
+    public Timestamp getUpdate_at() {
         return update_at;
     }
 
-    public void setUpdate_at(String update_at) {
+    public void setUpdate_at(Timestamp update_at) {
         this.update_at = update_at;
     }
 

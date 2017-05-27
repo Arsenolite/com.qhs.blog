@@ -1,5 +1,7 @@
 package com.qhs.blog.bean;
 
+import java.sql.Timestamp;
+
 /**
  * Created by QHS on 2017/5/25.
  */
@@ -8,7 +10,7 @@ public class Comment {
     private int author;
     private String content;
     private int article_id;
-    private String create_at;
+    private Timestamp create_at;
 
     public int getArticle_id() {
         return article_id;
@@ -19,11 +21,11 @@ public class Comment {
     }
 
 
-    public String getCreate_at() {
+    public Timestamp getCreate_at() {
         return create_at;
     }
 
-    public void setCreate_at(String create_at) {
+    public void setCreate_at(Timestamp create_at) {
         this.create_at = create_at;
     }
 
