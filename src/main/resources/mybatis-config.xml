@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 由于数据源在spring-dao里，这里几乎没有配置 -->
+    <settings>
+        <!-- 使用jdbc的getGeneratedKeys获取数据库自增主键值 -->
+        <setting name="useGeneratedKeys" value="true" />
+
+        <!-- 使用列别名替换列名 默认:true -->
+        <setting name="useColumnLabel" value="true" />
+
+    </settings>
+</configuration>
