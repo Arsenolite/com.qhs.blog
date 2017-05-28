@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="text" id="captcha" name="captcha" maxlength="4" />
+<img src="/api/captcha" onclick="this.src='/api/captcha?d='+new Date().getTime()"/>
+</body>
+</html>

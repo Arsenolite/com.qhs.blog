@@ -45,7 +45,7 @@
         <!--数据源-->
         <property name="dataSource" ref="dataSource"/>
         <!--Mybatis配置-->
-        <property name="configLocation" value="mybatis-config.xml"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
         <!--实体包-->
         <property name="typeAliasesPackage" value="com.qhs.blog.bean"/>
         <!--由于整体使用注解，mapper的XML段省略-->
