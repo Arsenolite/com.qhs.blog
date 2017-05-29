@@ -7,8 +7,8 @@
       http://www.springframework.org/schema/context
       http://www.springframework.org/schema/context/spring-context.xsd">
     <!-- Spring+Mybatis步骤-->
-    <!--1.设置单独属性文件放置数据库地址密码，实现解耦-->
-    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!--1.设置单独属性文件放置数据库地址密码，实现解耦，后面的true是为了实现多个配置文件-->
+    <context:property-placeholder location="classpath:jdbc.properties"  ignore-unresolvable="true" order="1"/>
 
     <!--2.将配置文件作为变量，装配出一个带连接池的数据源，该段参考druid的github-->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"

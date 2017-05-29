@@ -1,5 +1,7 @@
 package com.qhs.blog.service;
 
+import com.qhs.blog.bean.User;
+
 /**
  * Created by QHS on 2017/5/27.
  */
@@ -16,5 +18,13 @@ public interface userService {
 //    构建验证码
 //    将bean存入数据库
 //    返回对验证码的验证
+    public boolean userReg(User user);
+
+    public boolean userLogin(User user);
+
+    public boolean userLogout(User user);
+
+    public boolean userEdit();
+
 
 }
