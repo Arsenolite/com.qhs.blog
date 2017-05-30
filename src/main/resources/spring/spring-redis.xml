@@ -6,7 +6,7 @@
       http://www.springframework.org/schema/beans/spring-beans.xsd
       http://www.springframework.org/schema/context
       http://www.springframework.org/schema/context/spring-context.xsd">
-    <!--redis的DAO和MySQL的Mapper分开-->
+    
     <context:component-scan base-package="com.qhs.blog.dao" />
     <!-- jedis 配置 -->
     <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">

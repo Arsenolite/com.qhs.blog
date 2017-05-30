@@ -7,11 +7,15 @@
     <version>1.0-SNAPSHOT</version>
     <name>com.qhs.blog Maven Webapp</name>
     <url>http://maven.apache.org</url>
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
         <!-- 1) 日志https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
@@ -25,6 +29,17 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>2.8.2</version>
+        </dependency>
+        <!--<!– 实现slf4j接口并整合 –>-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
         </dependency>
         <!-- 2) JSON转换和解析https://mvnrepository.com/artifact/org.json/json -->
         <dependency>
@@ -102,6 +117,12 @@
             <artifactId>spring-data-redis</artifactId>
             <version>1.8.3.RELEASE</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>4.3.8.RELEASE</version>
+        </dependency>
 
         <!-- 5) 数据库https://mvnrepository.com/artifact/org.mybatis/mybatis -->
         <dependency>
@@ -152,13 +173,31 @@
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
             <version>2.3.26-incubating</version>
         </dependency>
+        <!-- 8) JWT鉴权规范https://mvnrepository.com/artifact/com.nimbusds/nimbus-jose-jwt -->
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>4.37.1</version>
+        </dependency>
+        <!-- 9) 跨域请求处理https://mvnrepository.com/artifact/com.thetransactioncompany/cors-filter -->
+        <dependency>
+            <groupId>com.thetransactioncompany</groupId>
+            <artifactId>cors-filter</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.thetransactioncompany/java-property-utils -->
+        <dependency>
+            <groupId>com.thetransactioncompany</groupId>
+            <artifactId>java-property-utils</artifactId>
+            <version>1.10</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>com.qhs.blog</finalName>

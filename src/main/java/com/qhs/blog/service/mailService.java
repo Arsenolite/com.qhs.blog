@@ -13,7 +13,7 @@ public interface mailService {
 //    调用send方法发送，并且返回生成的验证码
 
     public void sendMail(String target,String mailCode);
-    public String genMailByUser(User user);
+    public void genMailByUser(User user,String token);
     public String genMailCode();
 
 }

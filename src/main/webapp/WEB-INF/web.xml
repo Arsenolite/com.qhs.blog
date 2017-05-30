@@ -21,7 +21,6 @@ http://java.sun.com/xml/ns/j2ee/web-app_3_1.xsd">
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-
     <!--中文编码问题-->
     <filter>
         <filter-name>CharacterEncodingFilter</filter-name>

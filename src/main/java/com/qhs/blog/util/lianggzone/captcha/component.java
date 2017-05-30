@@ -6,6 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.nio.Buffer;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -29,8 +32,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class component {
 
-    @Autowired
-    private redisDao redisBaseDao;
+    //Component只负责返回一个验证码和图片的Map，不负责Token鉴权也不负责数据库读写，也不直接操作Servlet流，高内聚低耦合
+    //所以无需任何参数，直接返回一个Map，存有一张图和一个字符串
+    //    @Autowired
+//    private redisDao redisBaseDao;
 
     // 图片的宽度
     private static final int CAPTCHA_WIDTH = 90;
@@ -52,8 +57,9 @@ public class component {
     // 过期时间为60秒
     private static final long EXPIRE_MINUTES = 60;
 
-    public void genCaptcha(String token, HttpServletRequest req, HttpServletResponse resp){
+    public Map<String,Object> genCaptcha(){
 
+        Map<String,Object> captcha = new HashMap<String,Object>();
         // 定义图像 Buffer
         BufferedImage buffImg = new BufferedImage(CAPTCHA_WIDTH, CAPTCHA_HEIGHT, BufferedImage.TYPE_INT_RGB);
         // 创建一个绘制图像的对象
@@ -97,29 +103,14 @@ public class component {
             // 将产生的随机数组合在一起
             randomCode.append(code);
         }
-
-        // 禁止图像缓存
-        resp.setHeader("Pragma", "no-cache");
-        resp.setHeader("Cache-Control", "no-cache");
-        resp.setDateHeader("Expires", 0);
-        resp.setContentType("image/jpeg");
-        // 将图像输出到Servlet输出流中
-        ServletOutputStream sos = null;
-        try {
-            sos = resp.getOutputStream();
-            ImageIO.write(buffImg, "jpeg", sos);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } finally{
-            try {
-                sos.close();
-                g.dispose();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        this.redisBaseDao.addValue(token, randomCode.toString());
-        this.redisBaseDao.expire(token, EXPIRE_MINUTES, TimeUnit.MINUTES);
+        g.dispose();
+        //解耦，将生成的验证码和图片存入Map供Service使用
+        //这个轮子把验证码字符串直接和生成图片的逻辑放一起了……懒得取出来复用在mail里了……
+        captcha.put("code",randomCode.toString());
+        captcha.put("img",buffImg);
+        return captcha;
+//操作response的语句移到Controller
+//        this.redisBaseDao.addValue(token, randomCode.toString());
+//        this.redisBaseDao.expire(token, EXPIRE_MINUTES, TimeUnit.MINUTES);
     }
 }

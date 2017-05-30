@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qhs.blog.mapper.userMapper">
+
+    <select id="getUser" resultType="User" parameterType="Integer">
+        select * from `blog_user` where `id` = #{id}
+    </select>
+
+    <update id="update" parameterType="User">
+        update `blog_user`
+        <set>
+        <if test="name !=null">`name`=#{name},</if>
+        <if test="pwd !=null">`pwd`=#{pwd},</if>
+        <if test="sig !=null">`sig`=#{sig},</if>
+        <if test="ava !=null">`ava`=#{ava},</if>
+        <if test="phone !=null">`phone`=#{phone},</if>
+        <if test="level !=null">`level`=#{level},</if>
+        <if test="email !=null">`email`=#{email},</if>
+        </set>
+        where id = #{user.id}
+    </update>
+
+    <insert id="add"  parameterType="User" >
+        insert into `blog_user` (`name`,`pwd`,`email`) values (#{user.name},#{user.pwd},#{user.email})
+    </insert>
+
+    <select id="checkName"  resultType="User" parameterType="User">
+        select * from `blog_user` where `name` = #{user.name}
+    </select>
+
+    <select id="checkEmail" resultType="User" parameterType="User">
+        select * from `blog_user` where `email` = #{user.email}
+    </select>
+</mapper>
