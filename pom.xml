@@ -185,19 +185,12 @@
             <artifactId>nimbus-jose-jwt</artifactId>
             <version>4.37.1</version>
         </dependency>
-        <!-- 9) 跨域请求处理https://mvnrepository.com/artifact/com.thetransactioncompany/cors-filter -->
+        <!--9）shiro权限管理 https://mvnrepository.com/artifact/org.apache.shiro/shiro-spring -->
         <dependency>
-            <groupId>com.thetransactioncompany</groupId>
-            <artifactId>cors-filter</artifactId>
-            <version>2.5</version>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>1.4.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.thetransactioncompany/java-property-utils -->
-        <dependency>
-            <groupId>com.thetransactioncompany</groupId>
-            <artifactId>java-property-utils</artifactId>
-            <version>1.10</version>
-        </dependency>
-
     </dependencies>
     <build>
         <finalName>com.qhs.blog</finalName>
