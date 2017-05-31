@@ -11,9 +11,7 @@ public interface userService {
 
     public Map<String , Object> userReg(User user);
 
-    public Map<String , Object> userLogin(User user);
-
-    public Map<String , Object> userLogout(User user);
+    public Map<String, Object> userAuth(User user);
 
     public Map<String , Object> userEdit();
 

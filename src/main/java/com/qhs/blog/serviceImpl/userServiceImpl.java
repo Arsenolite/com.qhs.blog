@@ -30,8 +30,8 @@ public class userServiceImpl implements userService {
         if (user.getEmail() != null ||
             user.getName() != null ||
             user.getPwd() != null) {
-            //如果都不为空，检验数据库中是否已经存在
-            if(ud.checkEmail(user)==null || ud.checkEmail(user)==null){
+            //如果都不为空，就继续检验数据库中是否存在重复的用户名/邮箱
+            if(ud.checkName(user)==null || ud.checkEmail(user)==null){
                 ud.add(user);
                 result.put("result","success");
 
@@ -51,17 +51,23 @@ public class userServiceImpl implements userService {
         }
         return result;
     }
+    //检测用户身份的方法
+    @Override
+    public Map<String, Object> userAuth(User user) {
+        Map<String, Object> result = new HashMap<>();
+        User getUser = ud.checkName(user);
+        if(getUser != null){
+            int level = getUser.getLevel();
+            result.put("status","success");
+            result.put("level",level);
+        }else{
+            result.put("status","noSuchUser");
 
-
-    public Map<String , Object> userLogin(User user) {
-
-        return null;
+        }
+        return result;
     }
 
-    public Map<String , Object> userLogout(User user) {
-        return null;
-    }
-
+    //后续还要提供前端检查是否存在重复用户的方法
     public Map<String , Object> userEdit() {
         return null;
     }

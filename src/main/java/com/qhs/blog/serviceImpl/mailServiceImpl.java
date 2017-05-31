@@ -51,9 +51,7 @@ public class mailServiceImpl implements mailService {
         try {
             Template template = freeMarkerConfigurer.getConfiguration().getTemplate("mailCode.ftl");
             text = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (TemplateException e) {
+        } catch (IOException | TemplateException e) {
             e.printStackTrace();
         }
         sendMail(target, text);
@@ -65,7 +63,9 @@ public class mailServiceImpl implements mailService {
 
     //检测是否合法
     public String findMailCode(String token) {
+
         return redisDao.getValue(token);
+
     }
 
     public void sendMail(String target, String content) {

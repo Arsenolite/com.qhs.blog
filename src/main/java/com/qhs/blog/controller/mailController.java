@@ -23,14 +23,6 @@ public class mailController {
     @Autowired
     private tokenServiceImpl tokenService;
 
-//Demo
-//    @RequestMapping(value = "/send")
-//    public void testSendMail(){
-//        User user = new User();
-//        user.setEmail("1581715021@qq.com");
-//        user.setName("芸");
-//        mailService.genMailByUser(user);
-//    }
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public Map<String, Object> sendMail(@RequestBody User user) {
@@ -39,7 +31,7 @@ public class mailController {
 
         Date date = new Date();
         Map<String, Object> payload = new HashMap<>();
-        payload.put("get", "mailCode");//表明操作
+        payload.put("value", "getMailCode");//表明操作
         payload.put("iat", date.getTime());//签发时间是服务器当前时间
         payload.put("ext", date.getTime() + 1000 * 60 * 60);//过期时间一小时
 
@@ -61,6 +53,16 @@ public class mailController {
         boolean isValid = false;
         if (reqMailCode.equals(mailCode)) {
             isValid = true;
+            //发一个新的token给客户端
+            Date date = new Date();
+            Map<String, Object> payload = new HashMap<>();
+            payload.put("value", "mailAuthed");//表明操作
+            payload.put("iat", date.getTime());//签发时间是服务器当前时间
+            payload.put("ext", date.getTime() + 1000 * 60 * 60);//过期时间60分钟
+            token = tokenService.createToken(payload);
+            //将新token和是否有效一起装进去
+            params.put("valid", isValid);
+            params.put("token",token);
         }
         params.put("valid", isValid);
         return params;

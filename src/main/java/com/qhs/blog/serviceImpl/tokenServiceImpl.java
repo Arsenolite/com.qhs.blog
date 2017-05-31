@@ -33,7 +33,7 @@ public class tokenServiceImpl implements tokenService {
 
     //    @Autowired
 //    private redisDao redisDao;
-//      将token存储进redis不在这层做。
+//      将token存储进redis不在这层做，解耦。
 //      Map中存储用户ID，Token生成时间，过期时间等
     @Override
     public String createToken(Map<String, Object> payload) {
@@ -53,7 +53,7 @@ public class tokenServiceImpl implements tokenService {
 
     @Override
     public Map<String, Object> validToken(String token) {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<>();
         try {
             //将字符串解析成JWSObject
             JWSObject jwsObject = JWSObject.parse(token);
@@ -77,6 +77,7 @@ public class tokenServiceImpl implements tokenService {
                         resultMap.put("state", "EXPIRED");
                     }
                 }
+                //将JSONOBJ作为参数返回
                 resultMap.put("data", jsonOBj);
 
             } else {

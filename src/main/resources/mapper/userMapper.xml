@@ -6,7 +6,7 @@
 <mapper namespace="com.qhs.blog.mapper.userMapper">
 
     <select id="getUser" resultType="User" parameterType="Integer">
-        select * from `blog_user` where `id` = #{id}
+        select * from `blog_user` where `Id` = #{id}
     </select>
 
     <update id="update" parameterType="User">
@@ -34,4 +34,6 @@
     <select id="checkEmail" resultType="User" parameterType="User">
         select * from `blog_user` where `email` = #{user.email}
     </select>
+
+
 </mapper>
