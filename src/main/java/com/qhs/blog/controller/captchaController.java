@@ -37,7 +37,7 @@ public class captchaController {
 
         Map<String, Object> params = new HashMap<>();
 //        String token = req.getParameter("token");
-//        // TODO:有效性检验优化
+//        有效性检验优化
 //        Assert.hasText(token);
 //        captchaService.genCaptcha(token, req, resp)
         //轮子本体中，Token由前端生成并传值，这里修改成由后端生成
@@ -70,7 +70,6 @@ public class captchaController {
             BufferedImage buffImg = captchaService.genCaptcha(token);
             ImageIO.write(buffImg, "jpeg", sos);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -79,12 +78,13 @@ public class captchaController {
     /**
      * 查询图片验证码
      */
+
     @RequestMapping(value = "/valid", method = RequestMethod.GET)
     public Map<String, Object> findCaptcha(@RequestParam String token, @RequestParam String reqCaptchaCode) {
 
 //        String token = req.getParameter("token");
 //        String reqCaptchaCode = req.getParameter("captchaCode");
-        // TODO:有效性检验优化
+
         Assert.hasText(token);
         Assert.hasText(reqCaptchaCode);
         String captchaCode = captchaService.findCaptcha(token);

@@ -11,9 +11,9 @@ public interface userService {
 
     public Map<String , Object> userReg(User user);
 
-    public Map<String, Object> userAuth(User user);
+    public Map<String, Object> userAuthc(User user);
 
-    public Map<String , Object> userEdit();
+    public Map<String , Object> userEdit(User user);
 
-
+    public Map<String , Object> userRepeat(User user);
 }

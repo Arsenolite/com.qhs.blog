@@ -17,6 +17,8 @@ public class User {
     private Timestamp create_at;
     private Timestamp last_login_at;
 
+
+
     public int getId() {
         return id;
     }
@@ -95,4 +97,5 @@ public class User {
     public void setLast_login_at(Timestamp last_login_at) {
         this.last_login_at = last_login_at;
     }
+
 }

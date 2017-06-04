@@ -3,6 +3,28 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
 http://java.sun.com/xml/ns/j2ee/web-app_3_1.xsd">
+<!--将错误信息指定为返回JSON的页面-->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/api/index/404</location>
+    </error-page>
+
+    <error-page>
+        <error-code>401</error-code>
+        <location>/api/index/401</location>
+    </error-page>
+
+    <error-page>
+        <error-code>415</error-code>
+        <location>/api/index/415</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/api/index/500</location>
+    </error-page>
+
+
     <!--将springMVC作为servlet，拦截所有请求-->
     <servlet>
         <servlet-name>springmvc</servlet-name>

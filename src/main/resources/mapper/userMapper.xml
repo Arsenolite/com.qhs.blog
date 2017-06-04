@@ -27,11 +27,11 @@
         insert into `blog_user` (`name`,`pwd`,`email`) values (#{user.name},#{user.pwd},#{user.email})
     </insert>
 
-    <select id="checkName"  resultType="User" parameterType="User">
+    <select id="getByName"  resultType="User" parameterType="User">
         select * from `blog_user` where `name` = #{user.name}
     </select>
 
-    <select id="checkEmail" resultType="User" parameterType="User">
+    <select id="getByEmail" resultType="User" parameterType="User">
         select * from `blog_user` where `email` = #{user.email}
     </select>
 

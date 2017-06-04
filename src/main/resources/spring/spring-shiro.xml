@@ -9,18 +9,24 @@
     <!--修改密码/注册用户API需要通过邮件+网页验证码验证-->
     <!--因此需要4个过滤器验证是否完成网页/邮件验证码验证，以及验证是否登陆，以及是否有管理员权限-->
 
+    <!--验证码Filter-->
     <bean id="mailFilter" class="com.qhs.blog.util.shiro.filter.mailFilter"/>
     <bean id="captchaFilter" class="com.qhs.blog.util.shiro.filter.captchaFilter"/>
+    <!--认证Filter-->
+    <bean id="loginFilter" class="com.qhs.blog.util.shiro.filter.loginFilter"/>
+    <!--授权Filter-->
     <bean id="adminFilter" class="com.qhs.blog.util.shiro.filter.adminFilter"/>
-    <bean id="userFilter" class="com.qhs.blog.util.shiro.filter.userFilter"/>
+
+
 
     <!--要接触数据库的Realm则只需要两个-->
-    <bean id="adminRealm" class="com.qhs.blog.util.shiro.realm.adminRealm">
-        <property name="cachingEnabled" value="false"/>
-    </bean>
-    <bean id="userRealm" class="com.qhs.blog.util.shiro.realm.userRealm">
-        <property name="cachingEnabled" value="false"/>
-    </bean>
+    <!--我只认证Tk算了……无状态的API每次请求都要带用户名密码，各种意义上的不安全，频繁访问数据库也是开销。。-->
+    <!--<bean id="adminRealm" class="com.qhs.blog.util.shiro.realm.adminRealm">-->
+        <!--<property name="cachingEnabled" value="false"/>-->
+    <!--</bean>-->
+    <!--<bean id="userRealm" class="com.qhs.blog.util.shiro.realm.userRealm">-->
+        <!--<property name="cachingEnabled" value="false"/>-->
+    <!--</bean>-->
 
     <!--
     filterChainDefinitions参数说明,注意其验证顺序是自上而下
@@ -65,15 +71,20 @@
                 <entry key="mail" value-ref="mailFilter"/>
                 <entry key="captcha" value-ref="captchaFilter"/>
                 <entry key="admin" value-ref="adminFilter"/>
-                <entry key="user" value-ref="userFilter"/>
+                <entry key="login" value-ref="loginFilter"/>
             </util:map>
         </property>
         <!-- 设计哪些URL用哪个过滤器 -->
         <!--由于具体用户权限还没细化成接口，先定义两个验证码的过滤器-->
         <property name="filterChainDefinitions">
             <value>
+
+                <!-- 邮箱验证码要求网页验证码认证通过 -->
                 /api/captcha/** = noSessionCreation,anon
                 /api/mail/** = noSessionCreation,captcha
+
+                <!-- 用户模块 -->
+
             </value>
         </property>
     </bean>
@@ -100,7 +111,7 @@
 
     <!-- 安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-        <property name="realm" ref="userRealm"/>
+        <!--<property name="realm" ref="userRealm"/>-->
         <property name="subjectDAO" ref="subjectDAO"/>
         <property name="subjectFactory" ref="subjectFactory"/>
         <property name="sessionManager" ref="sessionManager"/>
@@ -112,6 +123,12 @@
                   value="org.apache.shiro.SecurityUtils.setSecurityManager"/>
         <property name="arguments" ref="securityManager"/>
     </bean>
+    <!--构建一个Hash服务，在此指定叠加方式和采用的算法-->
+    <bean id="defaultHashService" class="org.apache.shiro.crypto.hash.DefaultHashService">
+        <property name="hashAlgorithmName" value="SHA-512"/>
+        <property name="hashIterations" value="7"/>
+    </bean>
+
 
 
 </beans>

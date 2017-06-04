@@ -36,16 +36,19 @@ public class captchaFilter extends AccessControlFilter {
         Map<String, Object> resultMap = tokenService.validToken(token);
         switch ((String) resultMap.get("state")) {
             case "EXPIRED":
-                resp.put("warning","授权已过期");
+                resp.put("warning", "授权已过期");
                 break;
             case "VALID":
                 //在此验证Token中的信息
                 //如果信息正确，返回true
                 JSONObject jo = (JSONObject) resultMap.get("data");
                 String value = (String) jo.get("value");
-                //如果能拿到和邮件验证码用的Tk，肯定是通过了图片验证码校验。
+                //如果能拿到要求邮件验证码用的Tk，肯定是通过了图片验证码校验。
+
+                //所以，通过邮件验证码之后给的TK能直接过图片验证码的Filter。
+
                 //保持同时只存在一个Tk，避免混淆。
-                if (value.equals("captchaAuthed")&&value.equals("getMailCode")) {
+                if (value.equals("captchaAuthed") && value.equals("getMailCode")) {
 //                    我怎么会想到在通过验证之后往servlet流里写东西的……
 //                    我他妈就是个傻逼
 //                    servletResponse.setCharacterEncoding("UTF-8");
@@ -57,7 +60,8 @@ public class captchaFilter extends AccessControlFilter {
                 }
                 break;
             case "INVALID":
-
+//返回一个json字符串
+                resp.put("msg", "请输入验证码");
                 break;
         }
 
@@ -66,9 +70,7 @@ public class captchaFilter extends AccessControlFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-        //返回一个json字符串
 
-        resp.put("msg", "请输入验证码");
         servletResponse.setCharacterEncoding("UTF-8");
         servletResponse.setContentType("application/json; charset=utf-8");
         servletResponse.getWriter().write(resp.toJSONString());

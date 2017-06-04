@@ -18,11 +18,9 @@ import java.util.Map;
 public class mailFilter extends AccessControlFilter {
     @Autowired
     private tokenServiceImpl tokenService;
-    JSONObject resp = new JSONObject();
+    JSONObject resp = new JSONObject() ;
     //写过captchaFilter了，这个大同小异，只需要验证value是不是mailAuthed就行了。
-    //通过邮件验证之后会重新颁布Tk。
-    //可惜如果token expired没法输出……
-    //其实是有的，要在类里组出JSON对象
+
 
     @Override
     protected boolean isAccessAllowed(ServletRequest servletRequest, ServletResponse servletResponse, Object o) throws Exception {
@@ -37,11 +35,13 @@ public class mailFilter extends AccessControlFilter {
             case "VALID":
                 JSONObject jo = (JSONObject) resultMap.get("data");
                 String value = (String) jo.get("value");
+                //通过邮件验证之后会重新颁布Tk，因此这里检查的value是“已验证邮箱”
                 if (value.equals("mailAuthed")) {
                     flag = true;
                 }
                 break;
             case "INVALID":
+                resp.put("msg", "请先通过邮箱认证");
                 break;
         }
 
@@ -50,8 +50,6 @@ public class mailFilter extends AccessControlFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-
-        resp.put("msg", "请先通过邮箱认证");
         servletResponse.setCharacterEncoding("UTF-8");
         servletResponse.setContentType("application/json; charset=utf-8");
         servletResponse.getWriter().write(resp.toJSONString());
