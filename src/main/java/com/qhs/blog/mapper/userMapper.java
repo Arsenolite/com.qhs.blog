@@ -22,7 +22,6 @@ public interface userMapper {
     public User getByName(@Param("user") User user);
 
     //验证邮箱是否已经存在
-
     public User getByEmail(@Param("user") User user);
 
 

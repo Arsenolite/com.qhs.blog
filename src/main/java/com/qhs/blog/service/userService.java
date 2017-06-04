@@ -16,4 +16,8 @@ public interface userService {
     public Map<String , Object> userEdit(User user);
 
     public Map<String , Object> userRepeat(User user);
+
+    public Map<String , Object> userLogout(String token);
+
+    public Map<String, Object> userInfo(Integer uid);
 }

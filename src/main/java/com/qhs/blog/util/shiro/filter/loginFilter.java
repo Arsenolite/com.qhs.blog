@@ -2,7 +2,6 @@ package com.qhs.blog.util.shiro.filter;
 
 
 import com.qhs.blog.dao.redisDao;
-import com.qhs.blog.mapper.userMapper;
 import com.qhs.blog.serviceImpl.tokenServiceImpl;
 import net.minidev.json.JSONObject;
 import org.apache.shiro.web.filter.AccessControlFilter;
@@ -25,7 +24,7 @@ public class loginFilter extends AccessControlFilter {
     private tokenServiceImpl tokenService;
 
     @Autowired
-    private userMapper ud;
+    private redisDao redisDao;
 
 
     JSONObject resp = new JSONObject();
@@ -48,10 +47,19 @@ public class loginFilter extends AccessControlFilter {
                 resp.put("warning", "登陆已过期");
                 break;
             case "VALID":
-                //降低开销，不从数据库验证
-                //TODO 判断是否是请求的资源作者
-                flag = true;
-                break;
+                //从redis拿Token，看拿不拿得到
+                if (redisDao.getValue(reqToken) != null){
+                    resp.put("warning", "请先登录");
+                    break;
+                }else{
+                    if(resultMap.get("uid")==servletRequest.getParameter("id")){
+                        flag = true;
+                    }else{
+                        resp.put("warning", "身份不正确");
+                    }
+
+                    break;
+                }
             case "INVALID":
                 resp.put("warning", "请先登录");
                 break;

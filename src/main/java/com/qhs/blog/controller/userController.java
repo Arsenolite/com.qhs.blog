@@ -22,9 +22,7 @@ public class userController {
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public Map<String,Object> userReg(@RequestBody User user){
-
         Map<String, Object> result = userService.userReg(user);
-
         return result;
     }
 
@@ -38,15 +36,26 @@ public class userController {
     //注销
     @RequestMapping(value = "/logout",method = RequestMethod.POST)
     public Map<String,Object> userLogout(@RequestParam (value = "token") String token){
-        //
-        Map<String,Object> result = userService.userLogout(user);
+        //将Token交给Service让它处理
+        Map<String,Object> result = userService.userLogout(token);
         return result;
     }
 
     //修改用户信息
-    @RequestMapping(value = "/info/{id}" ,method = RequestMethod.POST)
-    public Map<String,Object> userInfo(@RequestBody User user){
-
+    //构建完URL之后再搞拦截器
+    @RequestMapping(value = "/info" ,method = RequestMethod.POST)
+    public Map<String,Object> userEdit(@RequestBody User user,@RequestParam("uid") Integer uid){
+        //将id封装进user对象
+        user.setId(uid);
+        Map<String,Object> result = userService.userEdit(user);
+        return result;
     }
+    //获取用户信息
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public Map<String,Object> userInfo(@RequestParam("uid") Integer uid){
+        Map<String,Object> result = userService.userInfo(uid);
+        return result;
+    }
+
 
 }

@@ -1,18 +1,21 @@
 package com.qhs.blog.serviceImpl;
 
 import com.qhs.blog.bean.User;
+import com.qhs.blog.dao.redisDao;
 import com.qhs.blog.mapper.userMapper;
 import com.qhs.blog.service.userService;
 import org.apache.shiro.crypto.hash.DefaultHashService;
 import org.apache.shiro.crypto.hash.HashRequest;
 import org.apache.shiro.util.ByteSource;
 import org.apache.shiro.util.SimpleByteSource;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 2017年5月30日22:41:24实现用户注册逻辑
@@ -28,7 +31,9 @@ public class userServiceImpl implements userService {
     private tokenServiceImpl tokenService;
     @Autowired
     private DefaultHashService defaultHashService;
-
+    @Autowired
+    private redisDao redisDao;
+    long ext = (long)86400000 * 30;//过期时间一个月
 
     //用户注册方法
     public Map<String, Object> userReg(User user) {
@@ -39,7 +44,6 @@ public class userServiceImpl implements userService {
                 user.getPwd() != null) {
             //如果都不为空，就继续检验数据库中是否存在重复的用户名/邮箱
             if (ud.getByEmail(user) == null && ud.getByName(user) == null) {
-
                 //加私盐
                 defaultHashService.setPrivateSalt(new SimpleByteSource("A79B332D1D4D557071CC3539EF75CA50"));
                 //将用户给的密码加盐加密
@@ -54,8 +58,9 @@ public class userServiceImpl implements userService {
                 Date date = new Date();
                 Map<String, Object> payload = new HashMap<>();
                 payload.put("id", ud.getByEmail(user).getId());//将这个user对象的id查出来
+                payload.put("level", ud.getByEmail(user).getLevel());//将这个user对象的id查出来
                 payload.put("iat", date.getTime());//签发时间是服务器当前时间
-                payload.put("ext", date.getTime() + 1000 * 60 * 60 * 24 * 7);//过期时间一周
+                payload.put("ext", date.getTime() + ext);//过期时间半个月
                 String token = tokenService.createToken(payload);
                 result.put("token", token);
             } else {
@@ -70,14 +75,12 @@ public class userServiceImpl implements userService {
     }
 
 
-    //Tk中需要包含等级信息，方便shiro的filter管理。
+    //用户认证
     @Override
     public Map<String, Object> userAuthc(User user) {
         Map<String, Object> result = new HashMap<>();
-//        User getUser = ud.getByName(user);
         //和注册一样，先判断传来的user实体里是不是有空，但是逻辑不一样
         //注册模块邮箱、用户名、密码必须都不为空，但是登陆的话可以用邮箱/用户名登陆，允许其中一个是空的
-
         User getUser = null;
         //检测完整性
         if (user.getEmail() != null &&
@@ -99,8 +102,9 @@ public class userServiceImpl implements userService {
             Date date = new Date();
             Map<String, Object> payload = new HashMap<>();
             payload.put("id", getUser.getId());//将这个user对象的id查出来
+            payload.put("level", getUser.getLevel());//将这个user对象的等级查出来
             payload.put("iat", date.getTime());//签发时间是服务器当前时间
-            payload.put("ext", date.getTime() + 1000 * 60 * 60 * 24 * 7);//过期时间一周
+            payload.put("ext", date.getTime() + ext);
             String token = tokenService.createToken(payload);
 
             result.put("token", token);
@@ -110,22 +114,59 @@ public class userServiceImpl implements userService {
 
         return result;
     }
-
-
-    //TODO 修改用户资料的方法
+    //作废Tk的方法（将Tk存入redis，到Tk本身的过期时间就过期）
+    @Override
+    public Map<String, Object> userLogout(String token) {
+        Map<String, Object> payload = tokenService.validToken(token);
+        //将Token的过期时间拿出来
+        long expireTime = (long)payload.get("ext");
+        //存入黑名单，加个过期时间
+        redisDao.addValue(token,"expired");
+        //过期时间是Tk的过期时间减去服务器当前时间
+        redisDao.expire(token,expireTime-new Date().getTime(), TimeUnit.MILLISECONDS);
+        return null;
+    }
+    //修改用户资料的方法
     public Map<String, Object> userEdit(User user) {
+        Map<String, Object> result = new HashMap<>();
         //拿到用户传进来的User对象
-
+        int flag = ud.update(user);
+        //不知道那个FLAG有没有用……写个测试类
+        result.put("result", flag);
         return null;
     }
 
-    //TODO 提供前端检查是否存在重复用户的方法
+    //前端Ajax查重的办法
     @Override
     public Map<String, Object> userRepeat(User user) {
-        return null;
+        //参照用户注册方法
+        Map<String, Object> result = new HashMap<>();
+        //由于是提供前端Ajax的方法，不设过滤器
+        User getUser = null;
+        //看前端给的是用户名还是密码
+        if (user.getEmail() != null) {
+            getUser = ud.getByEmail(user);
+            //去数据库拿邮箱里的用户对象
+        }else if (user.getName() != null){
+            getUser = ud.getByName(user);
+        }
+        if(getUser != null){
+            result.put("result", "exist");
+        }else{
+            result.put("result", "inexistence");
+        }
+
+        return result;
     }
 
 
+    //根据id获取用户信息的方法
+    @Override
+    public Map<String, Object> userInfo(Integer uid) {
+        User user = ud.getUser(uid);
+        JSONObject jo = new JSONObject(user);//这里采用org.json的JO，转换对象方便
+        return jo.toMap();
+    }
 
 
 }

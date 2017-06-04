@@ -10,6 +10,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Map;
+
 
 /**
  * Created by QHS on 2017/5/29.
@@ -22,18 +24,29 @@ public class userServiceImplTest {
     @Autowired
     private userServiceImpl usi;
     @Test
-    public void testMapper(){
+    public void testMapper() throws InterruptedException {
 //        String cfg = "spring/spring-dao.xml";
 //        ApplicationContext ac = new ClassPathXmlApplicationContext(cfg);
 //        userMapper ud = (userMapper) ac.getBean("userMapper");
-
-
-//        User user = ud.getUser(1);
+        //        User user = ud.getUser(1);
 //        System.out.println(user.getEmail());
 
 //        String mmm = usi.testGet();
 //        System.out.println(mmm);
 
+            User user = new User();
+            //测试修改用户信息
+//            user.setId(1);
+//            user.setPwd("567890");
+//            usi.userEdit(user);
+            //测试Ajax查重
+//            user.setName("arsenolit");
+//            Map<String, Object> result = usi.userRepeat(user);
+//            System.out.print(result.get("result"));
+            //测试查看用户信息
+//        Map<String, Object> result = usi.userInfo(1);
+
+        Thread.sleep(123456788);
 
     }
 
