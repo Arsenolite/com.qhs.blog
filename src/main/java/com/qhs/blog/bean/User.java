@@ -17,8 +17,6 @@ public class User {
     private Timestamp create_at;
     private Timestamp last_login_at;
 
-
-
     public int getId() {
         return id;
     }

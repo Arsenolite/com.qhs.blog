@@ -50,6 +50,7 @@ public class userController {
         Map<String,Object> result = userService.userEdit(user);
         return result;
     }
+
     //获取用户信息
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public Map<String,Object> userInfo(@RequestParam("uid") Integer uid){

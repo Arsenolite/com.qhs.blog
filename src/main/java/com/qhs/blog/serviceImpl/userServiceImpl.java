@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +51,8 @@ public class userServiceImpl implements userService {
                 String hex = defaultHashService.computeHash(new HashRequest.Builder().setSource(ByteSource.Util.bytes(user.getPwd())).build()).toHex();
                 //封装回User对象
                 user.setPwd(hex);
+                //将用户最后登录时间改成现在
+                user.setLast_login_at(new Timestamp(System.currentTimeMillis()));
                 //存入数据库
                 ud.add(user);
                 result.put("result", "success");
@@ -97,7 +100,12 @@ public class userServiceImpl implements userService {
         }
 
         if(user.getPwd().equals(getUser.getPwd())){
+            //将用户最后登录时间改成现在
+            user.setLast_login_at(new Timestamp(System.currentTimeMillis()));
+            ud.update(user);
+
             result.put("result", "success");
+
             //匹配成功，将用户的id包装为Tk返回
             Date date = new Date();
             Map<String, Object> payload = new HashMap<>();
@@ -117,6 +125,8 @@ public class userServiceImpl implements userService {
     //作废Tk的方法（将Tk存入redis，到Tk本身的过期时间就过期）
     @Override
     public Map<String, Object> userLogout(String token) {
+        Map<String, Object> result = new HashMap<>();
+        //感觉逻辑思维有点跟不上了……这边应该还是要检测传进来的Tk是否有效，昨晚给忘了
         Map<String, Object> payload = tokenService.validToken(token);
         //将Token的过期时间拿出来
         long expireTime = (long)payload.get("ext");
@@ -124,16 +134,18 @@ public class userServiceImpl implements userService {
         redisDao.addValue(token,"expired");
         //过期时间是Tk的过期时间减去服务器当前时间
         redisDao.expire(token,expireTime-new Date().getTime(), TimeUnit.MILLISECONDS);
-        return null;
+        return result;
     }
+
     //修改用户资料的方法
     public Map<String, Object> userEdit(User user) {
         Map<String, Object> result = new HashMap<>();
         //拿到用户传进来的User对象
         int flag = ud.update(user);
         //不知道那个FLAG有没有用……写个测试类
+        //事实证明是有用的，
         result.put("result", flag);
-        return null;
+        return result;
     }
 
     //前端Ajax查重的办法

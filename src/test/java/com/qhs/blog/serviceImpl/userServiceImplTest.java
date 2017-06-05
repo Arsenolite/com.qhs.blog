@@ -35,10 +35,16 @@ public class userServiceImplTest {
 //        System.out.println(mmm);
 
             User user = new User();
-            //测试修改用户信息
+        Map<String,Object> map = null;
+//            测试修改用户信息
 //            user.setId(1);
 //            user.setPwd("567890");
-//            usi.userEdit(user);
+//            Map<String,Object> map = usi.userEdit(user);
+            //测试添加用户
+//        user.setName("qhs");
+//        user.setPwd("cnmb");
+//        user.setEmail("quhansheng@gmail.com");
+//        map = usi.userReg(user);
             //测试Ajax查重
 //            user.setName("arsenolit");
 //            Map<String, Object> result = usi.userRepeat(user);

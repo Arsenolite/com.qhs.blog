@@ -15,7 +15,7 @@ public interface userMapper {
     public int update(@Param("user") User user);
 
     //注册用户的时候添加
-    public int add(@Param("user") User user);
+    public void add(@Param("user") User user);
 
     //验证用户名是否已经存在
     //直接返回User对象，可以用于查询用户身份

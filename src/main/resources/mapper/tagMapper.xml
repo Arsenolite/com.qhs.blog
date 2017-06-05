@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qhs.blog.mapper.tagMapper">
+
+    <insert id="add" parameterType="Tag" >
+        insert into `blog_tag` (`name`) values (#{tag.name})
+    </insert>
+    <delete id="delete" parameterType="Tag">
+        delete from `blog_tag` where `name` = #{tag.name}
+    </delete>
+    <select id="checkExist" resultType="Tag" parameterType="Tag">
+        select from `blog_tag` where `name` = #{tag.name}
+    </select>
+</mapper>

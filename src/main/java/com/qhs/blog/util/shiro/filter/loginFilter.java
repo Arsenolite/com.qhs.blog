@@ -49,14 +49,17 @@ public class loginFilter extends AccessControlFilter {
             case "VALID":
                 //从redis拿Token，看拿不拿得到
                 if (redisDao.getValue(reqToken) != null){
+                    //这个Tk已经拉黑
                     resp.put("warning", "请先登录");
                     break;
                 }else{
-                    if(resultMap.get("uid")==servletRequest.getParameter("id")){
+                    //Tk解析出的UID和请求的ID一致
+                    //这块放到adminFilter，授权相关
+//                    if(resultMap.get("uid")==servletRequest.getParameter("id")){
                         flag = true;
-                    }else{
-                        resp.put("warning", "身份不正确");
-                    }
+//                    }else{
+//                        resp.put("warning", "身份不正确");
+//                    }
 
                     break;
                 }
