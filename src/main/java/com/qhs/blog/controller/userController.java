@@ -3,6 +3,7 @@ package com.qhs.blog.controller;
 import com.qhs.blog.bean.User;
 import com.qhs.blog.serviceImpl.mailServiceImpl;
 import com.qhs.blog.serviceImpl.userServiceImpl;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,5 +59,10 @@ public class userController {
         return result;
     }
 
-
+    //修改密码
+    @RequestMapping(value = "/editPwd", method = RequestMethod.PUT)
+    public Map<String,Object> editPwd(@RequestBody User user){
+        Map<String,Object> result = userService.editPwd(user);
+        return result;
+    }
 }

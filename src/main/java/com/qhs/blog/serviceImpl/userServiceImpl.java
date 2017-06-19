@@ -138,13 +138,19 @@ public class userServiceImpl implements userService {
     }
 
     //修改用户资料的方法
+    //DONE 让这个方法只能修改除了密码之外的信息
     public Map<String, Object> userEdit(User user) {
         Map<String, Object> result = new HashMap<>();
-        //拿到用户传进来的User对象
-        int flag = ud.update(user);
-        //不知道那个FLAG有没有用……写个测试类
-        //事实证明是有用的，
-        result.put("result", flag);
+        if(user.getPwd()!=null){
+            //如果user对象里包含密码字段
+            result.put("result", "Illegal request");
+        }else{
+            //拿到用户传进来的User对象
+            int flag = ud.update(user);
+            //不知道那个FLAG有没有用……写个测试类
+            //事实证明是有用的，
+            result.put("result", flag);
+        }
         return result;
     }
 
@@ -175,9 +181,32 @@ public class userServiceImpl implements userService {
     //根据id获取用户信息的方法
     @Override
     public Map<String, Object> userInfo(Integer uid) {
+        Map<String, Object> result = new HashMap<>();
         User user = ud.getUser(uid);
-        JSONObject jo = new JSONObject(user);//这里采用org.json的JO，转换对象方便
-        return jo.toMap();
+
+        if (user !=null){
+            JSONObject jo = new JSONObject(user);//这里采用org.json的JO，转换对象方便
+            return jo.toMap();
+        }else{
+            result.put("result", "inexistence");
+            return result;
+        }
+
+
+    }
+
+    //Controller中单独列出一个URL，指明必须通过mailFilter
+    public Map<String,Object> editPwd(User user){
+        Map<String, Object> result = new HashMap<>();
+        if(user.getPwd()!=null){
+            //如果user对象里包含密码字段
+            int flag = ud.update(user);
+            result.put("result", flag);
+        }else{
+            result.put("result", "Illegal request");
+        }
+        return result;
+
     }
 
 
