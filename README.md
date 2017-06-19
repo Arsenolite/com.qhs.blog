@@ -1,15 +1,17 @@
-# com.qhs.blog
-----
+#一个没取过名的博客系统
+
 我承认这个项目烂尾了……虽然我已经完成了大半部分。
-github给了现成的gitpage，写自己的博客项目，部署到自己的服务器上就顿时有点失去意义……
-----
+
+github给了现成的gitpage，写自己的博客项目，部署到自己的服务器上就顿时有点失去意义。。
+
 我做了什么：
+
 + ssm整合，基本的增删改查。
 + 引入shiro，并将相关的bean纳入Spring管理，实现整合
 + 提供了rest API，并实现了无状态API下的用户认证授权。
 + 将一个基于spring-boot的图片验证码[项目](https://github.com/lianggzone/captcha)移植到自己的项目中，并将其中redis的操作应用到项目其他地方。
 （本想用jcaptcha，但是那个主要是基于表单，不符合我的需求）
-+ 使用Spring整合Javamail和Freemarker，组装邮件模板，实现邮件验证码
++ 使用Spring整合Javamail和Freemarker，组装邮件模板，实现邮件验证
 + 在linux下部署了Tomcat，nginx，jdk，mysql，成功跑起来了项目
 ----
 它目前的功能有：
